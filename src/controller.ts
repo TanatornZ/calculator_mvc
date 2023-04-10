@@ -1,25 +1,33 @@
 import { View } from "./view";
-import { Model } from "./model";
+import { Model, IModel, ModelError } from "./model";
 
 class Controller {
   View: View;
-  Model: Model;
+  Model: IModel;
   constructor(View: View, Model: Model) {
     this.View = View;
     this.Model = Model;
   }
 
   execute() {
-    this.View.logFirstEnter();
-    this.Model.getFristValue();
+    const { firstValue, secondValue, operator } = this.View.getInputs();
 
-    this.View.logOperatorEnter();
-    this.Model.getOperator();
-
-    this.View.logSecondEnter();
-    this.Model.getSecondValue();
-
-    this.View.logResult(this.Model.getResult());
+    try {
+      const results = this.Model.getResult(
+        Number(firstValue),
+        Number(secondValue),
+        operator
+      );
+      this.View.logResult(results);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        if (err.message == ModelError.INVALID_OPERATOR) {
+          this.View.logErrorInvalidOperator();
+        } else if (err.message == ModelError.DIVIDE_BY_ZERO) {
+          this.View.logErrorDivideByZero();
+        }
+      }
+    }
   }
 }
 

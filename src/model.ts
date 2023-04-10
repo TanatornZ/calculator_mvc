@@ -1,48 +1,34 @@
-import PromptSync from "prompt-sync";
+export interface IModel {
+  getResult: (
+    firstValue: number,
+    secondValue: number,
+    operator: string
+  ) => number | string;
+}
 
-const prompt = PromptSync();
+export enum ModelError {
+  DIVIDE_BY_ZERO = "DIVIDE_BY_ZERO",
+  INVALID_OPERATOR = "INVALID_OPERATOR",
+}
+export class Model implements IModel {
+  constructor() {}
 
-export class Model {
-  firstValue: number;
-  secondValue: number;
-  operator: string;
-
-  constructor() {
-    this.firstValue = 0;
-    this.secondValue = 0;
-    this.operator = "";
-  }
-
-  getFristValue() {
-    const firstValue = parseInt(prompt(""));
-    this.firstValue = firstValue;
-  }
-
-  getOperator() {
-    this.operator = prompt("");
-  }
-
-  getSecondValue() {
-    const secondValue = parseInt(prompt(""));
-    this.secondValue = secondValue;
-  }
-
-  getResult() {
-    switch (this.operator) {
+  getResult(firstValue: number, secondValue: number, operator: string) {
+    switch (operator) {
       case "+":
-        return this.firstValue + this.secondValue;
+        return firstValue + secondValue;
       case "-":
-        return this.firstValue - this.secondValue;
+        return firstValue - secondValue;
       case "*":
-        return this.firstValue * this.secondValue;
+        return firstValue * secondValue;
       case "/":
-        if (this.secondValue === 0) {
-          return "Result not a number, cannot divide by zero";
+        if (secondValue === 0) {
+          throw new Error(ModelError.DIVIDE_BY_ZERO);
         } else {
-          return this.firstValue / this.secondValue;
+          return firstValue / secondValue;
         }
       default:
-        return "Result Invalid operator";
+        throw new Error(ModelError.INVALID_OPERATOR);
     }
   }
 }
