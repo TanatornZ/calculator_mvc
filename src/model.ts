@@ -3,13 +3,14 @@ import PromptSync from "prompt-sync";
 const prompt = PromptSync();
 
 export class Model {
-  firstValue: any;
-  secondValue: any;
-  operator: any;
+  firstValue: number;
+  secondValue: number;
+  operator: string;
+
   constructor() {
-    this.firstValue;
-    this.secondValue;
-    this.operator;
+    this.firstValue = 0;
+    this.secondValue = 0;
+    this.operator = "";
   }
 
   getFristValue() {

@@ -1,20 +1,31 @@
 import { View } from "./view";
 import { Model } from "./model";
 
-function calculator() {
-  const view = new View();
-  const model = new Model();
+class Controller {
+  View: View;
+  Model: Model;
+  constructor(View: View, Model: Model) {
+    this.View = View;
+    this.Model = Model;
+  }
 
-  view.logFirstEnter();
-  model.getFristValue();
+  execute() {
+    this.View.logFirstEnter();
+    this.Model.getFristValue();
 
-  view.logOperatorEnter();
-  model.getOperator();
+    this.View.logOperatorEnter();
+    this.Model.getOperator();
 
-  view.logSecondEnter();
-  model.getSecondValue();
+    this.View.logSecondEnter();
+    this.Model.getSecondValue();
 
-  view.logResult(model.getResult());
+    this.View.logResult(this.Model.getResult());
+  }
 }
 
-calculator();
+const view = new View();
+const model = new Model();
+
+const calculator = new Controller(view, model);
+
+calculator.execute();
